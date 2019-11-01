@@ -75,6 +75,22 @@
         <main class="py-4">
             @yield('content')
         </main>
+
+        <form id="b-delete-from" method="POST">
+            @csrf
+            @method('delete')
+        </form>
+
+        <script src="{{asset("js/jquery.js")}}"></script>
+        <script>
+            $(document).ready(function(){
+                $(".b-delete-button").click(function(event){
+                    event.preventDefault();
+                    var action = $(this).data("action");
+                    $("#b-delete-from").attr("action",action).submit();
+                })
+            });
+        </script>
     </div>
 </body>
 </html>
