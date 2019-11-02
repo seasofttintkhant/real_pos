@@ -22,6 +22,7 @@ class CreateProductsTable extends Migration
             $table->text("description")->nullable();
             $table->integer("added_by");
             $table->integer("category_id");
+            $table->integer("quantity")->default(1);
             $table->softDeletes();      
             $table->timestamps();
         });

@@ -36,6 +36,12 @@
                             </div>
                         </div>
                         <div class="form-group row">
+                            <label for="quantity" class="col-md-2 col-form-label">Quantity</label>
+                            <div class="col-md-10">
+                                <input type="number" name="quantity" value="{{old("quantity",$product->quantity)}}" class="form-control" id="quantity">
+                            </div>
+                        </div>
+                        <div class="form-group row">
                             <label for="code" class="col-md-2 col-form-label">Code</label>
                             <div class="col-md-10">
                                 <input type="text" name="code" value="{{old("code",$product->code)}}" class="form-control" id="code">

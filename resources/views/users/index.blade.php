@@ -17,31 +17,33 @@
                 </div>
 
                 <div class="card-body">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Id</th>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>Role</th>
-                                <th></th>
-                            </tr>
-                            <tbody>
-                                @foreach ($users as $user)
-                                    <tr>
-                                        <td>{{$user->id}}</td>
-                                        <td>{{$user->name}}</td>
-                                        <td>{{$user->email}}</td>
-                                        <td>{{$user->role}}</td>
-                                        <td>
-                                            <a href="{{route("users.edit",$user->id)}}" class="btn btn-primary">Edit</a>
-                                            <button class="btn btn-danger b-delete-button" data-action="{{route("users.destroy",$user->id)}}">Delete</button>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>                            
-                        </thead>
-                    </table>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Role</th>
+                                    <th></th>
+                                </tr>
+                                <tbody>
+                                    @foreach ($users as $user)
+                                        <tr>
+                                            <td>{{$user->id}}</td>
+                                            <td>{{$user->name}}</td>
+                                            <td>{{$user->email}}</td>
+                                            <td>{{$user->role}}</td>
+                                            <td>
+                                                <a href="{{route("users.edit",$user->id)}}" class="btn btn-primary">Edit</a>
+                                                <button class="btn btn-danger b-delete-button" data-action="{{route("users.destroy",$user->id)}}">Delete</button>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>                            
+                            </thead>
+                        </table>
+                    </div>
 
                     {!! $users->links() !!}
                 </div>

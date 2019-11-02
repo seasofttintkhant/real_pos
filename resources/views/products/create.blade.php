@@ -31,19 +31,25 @@
                         <div class="form-group row">
                             <label for="price" class="col-md-2 col-form-label">Price</label>
                             <div class="col-md-10">
-                                <input type="number" name="price" class="form-control" id="price">
+                                <input type="number" name="price" value="{{old("price")}}" class="form-control" id="price">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="quantity" class="col-md-2 col-form-label">Quantity</label>
+                            <div class="col-md-10">
+                                <input type="number" name="quantity" value="{{old("quantity")}}" class="form-control" id="quantity">
                             </div>
                         </div>
                         <div class="form-group row">
                             <label for="code" class="col-md-2 col-form-label">Code</label>
                             <div class="col-md-10">
-                                <input type="text" name="code" class="form-control" id="code">
+                                <input type="text" name="code" value="{{old("code")}}" class="form-control" id="code">
                             </div>
                         </div>
                         <div class="form-group row">
                             <label for="description" class="col-md-2 col-form-label">Description</label>
                             <div class="col-md-10">
-                                <input type="text" name="description" class="form-control" id="description">
+                                <input type="text" name="description" value="{{old("description")}}" class="form-control" id="description">
                             </div>
                         </div>
                         <div class="form-group row">

@@ -19,7 +19,8 @@ class ProductController extends Controller
         "name" => ["required"],
         "deposite" => ["required","numeric"],
         "price" => ["required","numeric"],
-        "category_id" => ["required"]
+        "category_id" => ["required"],
+        "quantity" => ["required","numeric"]
     ];
 
     protected $categories;
@@ -70,6 +71,7 @@ class ProductController extends Controller
             "deposite" => $request->deposite,
             "price" => $request->price,
             "code" => $request->code,
+            "quantity" => $request->quantity,
             "description" => $request->description,
             "added_by" => auth()->user()->id,
             "category_id" => $request->category_id
@@ -127,6 +129,7 @@ class ProductController extends Controller
             "deposite" => $request->deposite,
             "price" => $request->price,
             "code" => $request->code,
+            "quantity" => $request->quantity,
             "description" => $request->description,
             "added_by" => auth()->user()->id,
             "category_id" => $request->category_id

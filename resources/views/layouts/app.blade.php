@@ -9,15 +9,13 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
-    <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
+    <!-- Styles -->
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/bootstrap.css') }}" rel="stylesheet">
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
-
-    <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
 <body>
     <div id="app">
@@ -80,17 +78,22 @@
             @csrf
             @method('delete')
         </form>
-
-        <script src="{{asset("js/jquery.js")}}"></script>
-        <script>
-            $(document).ready(function(){
-                $(".b-delete-button").click(function(event){
-                    event.preventDefault();
-                    var action = $(this).data("action");
-                    $("#b-delete-from").attr("action",action).submit();
-                })
-            });
-        </script>
     </div>
+    
+    <!-- Scripts -->
+    <script src="{{ asset('js/app.js') }}" defer></script>
+    <script src="{{asset("js/jquery.js")}}"></script>
+    <script src="{{ asset('js/bootstrap.js') }}" defer></script>
+    
+    <script>
+        $(document).ready(function(){
+            $(".b-delete-button").click(function(event){
+                event.preventDefault();
+                var action = $(this).data("action");
+                $("#b-delete-from").attr("action",action).submit();
+            })
+        });
+    </script>
+
 </body>
 </html>
