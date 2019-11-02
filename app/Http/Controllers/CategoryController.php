@@ -5,9 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-use App\User;
+use App\Category;
 
-class UserController extends Controller
+class CategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,16 +15,15 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     protected $rules = [
-        "name" => ["required"],
-        "role" => ["required"]
+        "name" => ["required"]
     ];
 
     public function index()
     {
         //
-        $users = User::paginate(10);
-        return view("users.index",[
-            "users" => $users
+        $categories = Category::with("user")->paginate(10);
+        return view("categories.index",[
+            "categories" => $categories
         ]);
     }
 
@@ -36,7 +35,7 @@ class UserController extends Controller
     public function create()
     {
         //
-        return view("users.create");
+        return view("categories.create");
     }
 
     /**
@@ -49,21 +48,17 @@ class UserController extends Controller
     {
         //
         $rules = $this->rules;
-        $rules["email"] = ["required","email","unique:users"];
-        $rules["password"] = ["required"];
-        $rules["c_password"] = ["required","same:password"];
         $validator = Validator::make($request->all(),$rules);
         if($validator->fails()){
             return redirect()->back();
         }
 
-        $user = User::create([
+        $category = Category::create([
             "name" => $request->name,
-            "email" => $request->email,
-            "password" => bcrypt($request->password),
-            "role" => $request->role,
+            "added_by" => auth()->user()->id
         ]);
-        return redirect()->route("users.index")->with("success",$user->name." has been added.");
+
+        return redirect()->route("categories.index")->with("success",$category->name." has been created.");
     }
 
     /**
@@ -86,9 +81,9 @@ class UserController extends Controller
     public function edit($id)
     {
         //
-        $user = User::findOrFail($id);
-        return view("users.edit",[
-            "user" => $user
+        $category = Category::findOrFail($id);
+        return view("categories.edit",[
+            "category" => $category
         ]);
     }
 
@@ -102,29 +97,19 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         //
-        $user = User::findOrFail($id);
+        $category = Category::findOrFail($id);
         $rules = $this->rules;
-        $rules["email"] = ["required","email","unique:users,email,$user->id"];
-        if(!empty($request->password)){
-            $rules["password"] = ["required"];
-            $rules["c_password"] = ["required","same:password"];
-            $pssword = bcrypt($request->password);
-        }
         $validator = Validator::make($request->all(),$rules);
         if($validator->fails()){
             return redirect()->back();
         }
 
-        $user->update([
+        $category->update([
             "name" => $request->name,
-            "email" => $request->email,
-            "role" => $request->role,
+            "added_by" => auth()->user()->id
         ]);
-        if(!empty($request->pssword)){
-            $user->password = $pssword;
-            $user->save();
-        }
-        return redirect()->route("users.index")->with("success",$user->name." has been updated.");
+
+        return redirect()->route("categories.index")->with("success",$category->name." has been updated.");
     }
 
     /**
@@ -136,8 +121,8 @@ class UserController extends Controller
     public function destroy($id)
     {
         //
-        $user =User::findOrFail($id);
-        User::destroy($id);
-        return redirect()->route("users.index")->with("success",$user->name." has been deleted."); 
+        $category = Category::findOrFail($id);
+        Category::destroy($id);
+        return redirect()->route("categories.index")->with("success",$category->name." has been deleted.");
     }
 }

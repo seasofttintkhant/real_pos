@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-use App\User;
+use App\Product;
 
-class UserController extends Controller
+class ProductController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,15 +17,23 @@ class UserController extends Controller
      */
     protected $rules = [
         "name" => ["required"],
-        "role" => ["required"]
+        "deposite" => ["required","numeric"],
+        "price" => ["required","numeric"],
+        "category_id" => ["required"]
     ];
+
+    protected $categories;
+    
+    public function __construct() {
+        $this->categories = Category::all();
+    }
 
     public function index()
     {
         //
-        $users = User::paginate(10);
-        return view("users.index",[
-            "users" => $users
+        $products = Product::with("user","category")->paginate(10);
+        return view("products.index",[
+            "products" => $products
         ]);
     }
 
@@ -36,7 +45,9 @@ class UserController extends Controller
     public function create()
     {
         //
-        return view("users.create");
+        return view("products.create",[
+            "categories" => $this->categories
+        ]);
     }
 
     /**
@@ -49,21 +60,22 @@ class UserController extends Controller
     {
         //
         $rules = $this->rules;
-        $rules["email"] = ["required","email","unique:users"];
-        $rules["password"] = ["required"];
-        $rules["c_password"] = ["required","same:password"];
         $validator = Validator::make($request->all(),$rules);
         if($validator->fails()){
             return redirect()->back();
         }
 
-        $user = User::create([
+        $porduct = Product::create([
             "name" => $request->name,
-            "email" => $request->email,
-            "password" => bcrypt($request->password),
-            "role" => $request->role,
+            "deposite" => $request->deposite,
+            "price" => $request->price,
+            "code" => $request->code,
+            "description" => $request->description,
+            "added_by" => auth()->user()->id,
+            "category_id" => $request->category_id
         ]);
-        return redirect()->route("users.index")->with("success",$user->name." has been added.");
+
+        return redirect()->route("products.index")->with("success",$porduct->name." has been created.");
     }
 
     /**
@@ -86,9 +98,10 @@ class UserController extends Controller
     public function edit($id)
     {
         //
-        $user = User::findOrFail($id);
-        return view("users.edit",[
-            "user" => $user
+        $porduct = Product::findOrFail($id);
+        return view("products.edit",[
+            "product" => $porduct,
+            "categories" => $this->categories
         ]);
     }
 
@@ -102,29 +115,24 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         //
-        $user = User::findOrFail($id);
+        $porduct = Product::findOrFail($id);
         $rules = $this->rules;
-        $rules["email"] = ["required","email","unique:users,email,$user->id"];
-        if(!empty($request->password)){
-            $rules["password"] = ["required"];
-            $rules["c_password"] = ["required","same:password"];
-            $pssword = bcrypt($request->password);
-        }
         $validator = Validator::make($request->all(),$rules);
         if($validator->fails()){
             return redirect()->back();
         }
 
-        $user->update([
+        $porduct->update([
             "name" => $request->name,
-            "email" => $request->email,
-            "role" => $request->role,
+            "deposite" => $request->deposite,
+            "price" => $request->price,
+            "code" => $request->code,
+            "description" => $request->description,
+            "added_by" => auth()->user()->id,
+            "category_id" => $request->category_id
         ]);
-        if(!empty($request->pssword)){
-            $user->password = $pssword;
-            $user->save();
-        }
-        return redirect()->route("users.index")->with("success",$user->name." has been updated.");
+
+        return redirect()->route("products.index")->with("success",$porduct->name." has been updated.");
     }
 
     /**
@@ -136,8 +144,8 @@ class UserController extends Controller
     public function destroy($id)
     {
         //
-        $user =User::findOrFail($id);
-        User::destroy($id);
-        return redirect()->route("users.index")->with("success",$user->name." has been deleted."); 
+        $porduct = Product::findOrFail($id);
+        Product::destroy($id);
+        return redirect()->route("products.index")->with("success",$porduct->name." has been deleted.");
     }
 }
