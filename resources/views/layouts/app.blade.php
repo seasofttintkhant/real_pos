@@ -31,7 +31,19 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
-
+                        @can("view-any",\App\Category::class)
+                            <li class="nav-item">
+                                <a href="{{route("categories.index")}}" class="nav-link">Categories</a>
+                            </li>
+                        @endcan
+                        <li class="nav-item">
+                            <a href="{{route("products.index")}}" class="nav-link">Products</a>
+                        </li>
+                        @can("view-any",\App\User::class)
+                            <li class="nav-item">
+                                <a href="{{route("users.index")}}" class="nav-link">Users</a>
+                            </li>
+                        @endcan
                     </ul>
 
                     <!-- Right Side Of Navbar -->
