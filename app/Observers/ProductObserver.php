@@ -13,18 +13,11 @@ class ProductObserver
      * @param  \App\Product  $product
      * @return void
      */
-    
-    protected function updateCategoryQuantity(){
-        
-    }
 
     public function created(Product $product)
     {
         //
-        $category = Category::find($product->category_id);
-        $category->update([
-            "quantity" => $category->products()->sum("quantity")
-        ]);
+        $this->updateCategoryQuantity($product);        
     }
 
     /**
@@ -36,10 +29,7 @@ class ProductObserver
     public function updated(Product $product)
     {
         //
-        $category = Category::find($product->category_id);
-        $category->update([
-            "quantity" => $category->products()->sum("quantity")
-        ]);
+        $this->updateCategoryQuantity($product);  
     }
 
     /**
@@ -51,10 +41,7 @@ class ProductObserver
     public function deleted(Product $product)
     {
         //
-        $category = Category::find($product->category_id);
-        $category->update([
-            "quantity" => $category->products()->sum("quantity")
-        ]);
+        $this->updateCategoryQuantity($product);  
     }
 
     /**
@@ -66,10 +53,7 @@ class ProductObserver
     public function restored(Product $product)
     {
         //
-        $category = Category::find($product->category_id);
-        $category->update([
-            "quantity" => $category->products()->sum("quantity")
-        ]);
+        $this->updateCategoryQuantity($product);  
     }
 
     /**
@@ -81,6 +65,16 @@ class ProductObserver
     public function forceDeleted(Product $product)
     {
         //
+        $this->updateCategoryQuantity($product);  
+    }
+
+    /**
+     * Update the qunantity of product in each category
+     * @param \App\Product $product
+     * @return void
+     */
+
+    protected function updateCategoryQuantity($product){
         $category = Category::find($product->category_id);
         $category->update([
             "quantity" => $category->products()->sum("quantity")
