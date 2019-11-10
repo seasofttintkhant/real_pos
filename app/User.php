@@ -37,6 +37,24 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    /**
+     * Chek admin
+     * @return boolean
+     */
+
+    public function isAdmin(){
+        return $this->role === "admin";
+    }
+
+    /**
+     * Check staff
+     * @return boolean
+     */
+
+    public function isStaff(){
+        return $this->role === "staff";
+    }
+
     public function products(){
         return $this->hasMany(Product::class,"added_by");
     }

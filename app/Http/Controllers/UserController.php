@@ -9,16 +9,21 @@ use App\User;
 
 class UserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     protected $rules = [
         "name" => ["required"],
         "role" => ["required"]
     ];
 
+    public function __construct() {
+        $this->authorizeResource(User::class);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    
     public function index()
     {
         //

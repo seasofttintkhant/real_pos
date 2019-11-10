@@ -9,18 +9,23 @@ use App\Category;
 
 class CategoryController extends Controller
 {
+    protected $rules = [
+        "name" => ["required"]
+    ];
+
+    public function __construct() {
+        // $this->authorizeResource(Category::class);
+    }
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    protected $rules = [
-        "name" => ["required"]
-    ];
 
     public function index()
     {
         //
+        $this->authorize("view-any", Category::class);
         $categories = Category::with("user")->paginate(10);
         return view("categories.index",[
             "categories" => $categories
@@ -35,6 +40,7 @@ class CategoryController extends Controller
     public function create()
     {
         //
+        $this->authorize("create", Category::class);
         return view("categories.create");
     }
 
@@ -47,6 +53,7 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         //
+        $this->authorize("create", Category::class);
         $rules = $this->rules;
         $validator = Validator::make($request->all(),$rules);
         if($validator->fails()){
@@ -82,6 +89,9 @@ class CategoryController extends Controller
     {
         //
         $category = Category::findOrFail($id);
+
+        $this->authorize("update",$category);
+
         return view("categories.edit",[
             "category" => $category
         ]);
@@ -98,6 +108,9 @@ class CategoryController extends Controller
     {
         //
         $category = Category::findOrFail($id);
+
+        $this->authorize('update', $category);
+
         $rules = $this->rules;
         $validator = Validator::make($request->all(),$rules);
         if($validator->fails()){
